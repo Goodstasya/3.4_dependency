@@ -1,47 +1,43 @@
 package ru.netology;
 
 import lombok.Data;
-import ru.netology.BillboardItem;
 
-@Data
 public class BillboardManager {
-  private int n;
-  private BillboardItem[] items = new BillboardItem[0];
+
+  private BillboardRepository repository;
 
   public BillboardManager()
   {
-    this.n = 10;
+    this.repository = new BillboardRepository();
   }
 
-  public BillboardManager(int n)
+  public BillboardManager(BillboardRepository repository)
   {
-    this.n = n;
+    this.repository = repository;
   }
 
-  public BillboardItem[] findAll() {
-    return items;
+  public BillboardManager(BillboardRepository repository, int n)
+  {
+    this.repository = repository;
+    this.repository.setN(n);
   }
 
-  public void add(BillboardItem item) {
-    this.save(item);
+  public void add(BillboardItem item)
+  {
+    repository.save(item);
   }
 
-  public void save(BillboardItem item) {
-    int length = items.length + 1;
-    BillboardItem[] tmp = new BillboardItem[length];
-    System.arraycopy(items, 0, tmp, 0, items.length);
-    int lastIndex = tmp.length - 1;
-    tmp[lastIndex] = item;
-    items = tmp;
-  }
-
-  public BillboardItem[] getFilms() {
-    BillboardItem[] items = this.findAll();
-    BillboardItem[] result = new BillboardItem[Math.min(n, items.length)];
-    for (int i = 0; i < Math.min(n, items.length) ; i++) {
+  public BillboardItem[] getAll() {
+    BillboardItem[] items = repository.findAll();
+    BillboardItem[] result = new BillboardItem[items.length];
+    for (int i = 0; i < result.length; i++) {
       int index = items.length - i - 1;
       result[i] = items[index];
     }
     return result;
+  }
+
+  public void removeById(int id) {
+    repository.removeById(id);
   }
 }

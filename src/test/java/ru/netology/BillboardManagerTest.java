@@ -18,8 +18,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class BillboardManagerTest {
+    @Mock
+    private BillboardRepository repository;
+
     @InjectMocks
-    private BillboardManager manager = new BillboardManager(5);
+    private BillboardManager manager;
+
     private BillboardItem film1 = new BillboardItem(1, "film1", "genre1");
     private BillboardItem film2 = new BillboardItem(2, "film2", "genre3");
     private BillboardItem film3 = new BillboardItem(3, "film3", "genre2");
@@ -35,6 +39,8 @@ class BillboardManagerTest {
 
     @BeforeEach
     public void setUp() {
+        repository.setN(5);
+
         manager.add(film1);
         manager.add(film2);
         manager.add(film3);
@@ -50,13 +56,21 @@ class BillboardManagerTest {
     }
 
     @Test
-    public void shouldAdd(){
-        BillboardItem film13 = new BillboardItem(13, "film13", "genre2");
+    public void shouldRemoveIfExists() {
+        int idToRemove = 10;
+        // настройка заглушки
+        BillboardItem[] returned = new BillboardItem[]{film12, film11, film10, film9, film8, film7, film6, film5, film4, film3, film2, film1};
+        doReturn(returned).when(repository).findAll();
+        doNothing().when(repository).removeById(idToRemove);
 
-        manager.add(film13);
-
-        BillboardItem[] expected = new BillboardItem[]{film13, film12, film11, film10, film9};
-        BillboardItem[] actual = manager.getFilms();
+        manager.removeById(idToRemove);
+        /*BillboardItem[] expected = new BillboardItem[]{film12, film11, film10, film9, film8, film7, film6, film5, film4, film3, film2, film1};*/
+        BillboardItem[] expected = new BillboardItem[]{film1, film2, film3, film4, film5, film6, film7, film8, film9, film10, film11, film12};
+        BillboardItem[] actual = manager.getAll();
         assertArrayEquals(expected, actual);
+
+        // удостоверяемся, что заглушка была вызвана с нужным значением
+        // но это уже проверка "внутренней" реализации
+        verify(repository).removeById(idToRemove);
     }
 }
