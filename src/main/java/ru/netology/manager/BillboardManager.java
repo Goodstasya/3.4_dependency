@@ -1,29 +1,22 @@
-package ru.netology;
+package ru.netology.manager;
 
 import lombok.Data;
-import ru.netology.BillboardItem;
+import ru.netology.domain.BillboardItem;
 
 @Data
 public class BillboardManager {
-  private int n;
+  private int BillboardLength = 10;
   private BillboardItem[] items = new BillboardItem[0];
 
-  public BillboardManager()
-  {
-    this.n = 10;
-  }
+  public BillboardManager() {  }
 
   public BillboardManager(int n)
   {
-    this.n = n;
+    this.BillboardLength = n;
   }
 
   public BillboardItem[] findAll() {
     return items;
-  }
-
-  public void add(BillboardItem item) {
-    this.save(item);
   }
 
   public void save(BillboardItem item) {
@@ -36,12 +29,15 @@ public class BillboardManager {
   }
 
   public BillboardItem[] getFilms() {
-    BillboardItem[] items = this.findAll();
-    BillboardItem[] result = new BillboardItem[Math.min(n, items.length)];
-    for (int i = 0; i < Math.min(n, items.length) ; i++) {
+    BillboardItem[] result = new BillboardItem[Math.min(BillboardLength, items.length)];
+    for (int i = 0; i < Math.min(BillboardLength, items.length) ; i++) {
       int index = items.length - i - 1;
       result[i] = items[index];
     }
     return result;
+  }
+
+  public void setItems(BillboardItem[] items) {
+    this.items = items;
   }
 }
