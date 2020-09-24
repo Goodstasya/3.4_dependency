@@ -1,4 +1,6 @@
-package ru.netology;
+package ru.netology.repository;
+
+import ru.netology.domain.*;
 
 public class BillboardRepository {
     private BillboardItem[] items = new BillboardItem[0];

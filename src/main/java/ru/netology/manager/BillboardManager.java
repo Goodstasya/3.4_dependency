@@ -1,6 +1,8 @@
-package ru.netology;
+package ru.netology.manager;
 
 import lombok.Data;
+import ru.netology.repository.*;
+import ru.netology.domain.*;
 
 public class BillboardManager {
 
@@ -20,11 +22,6 @@ public class BillboardManager {
   {
     this.repository = repository;
     this.repository.setN(n);
-  }
-
-  public void add(BillboardItem item)
-  {
-    repository.save(item);
   }
 
   public BillboardItem[] getAll() {
