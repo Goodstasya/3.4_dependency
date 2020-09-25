@@ -5,16 +5,6 @@ import ru.netology.domain.*;
 public class BillboardRepository {
     private BillboardItem[] items = new BillboardItem[0];
 
-    private int n;
-
-    public int getN() {
-        return n;
-    }
-
-    public void setN(int n) {
-        this.n = n;
-    }
-
     public void save(BillboardItem item) {
         int length = items.length + 1;
         BillboardItem[] tmp = new BillboardItem[length];
@@ -25,12 +15,7 @@ public class BillboardRepository {
     }
 
     public BillboardItem[] findAll() {
-        BillboardItem[] result = new BillboardItem[items.length];
-        for (int i = 0; i < result.length; i++) {
-            int index = items.length - i - 1;
-            result[i] = items[index];
-        }
-        return result;
+        return items;
     }
 
     public void removeAll() {
