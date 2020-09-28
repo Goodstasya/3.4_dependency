@@ -7,7 +7,7 @@ import ru.netology.domain.*;
 public class BillboardManager {
   private int BillboardLength = 10;
 
-  private BillboardRepository repository = new BillboardRepository();
+  private BillboardRepository repository;
 
   public BillboardManager() {  }
 

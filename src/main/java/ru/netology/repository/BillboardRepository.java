@@ -19,10 +19,7 @@ public class BillboardRepository {
     }
 
     public void removeAll() {
-        int id;
-        for (BillboardItem item : items) {
-            this.removeById(item.getId());
-        }
+        items = new BillboardItem[0];
     }
 
     public void removeById(int id) {
@@ -47,5 +44,9 @@ public class BillboardRepository {
         }
 
         return result;
+    }
+
+    public void setItems(BillboardItem[] items) {
+        this.items = items;
     }
 }

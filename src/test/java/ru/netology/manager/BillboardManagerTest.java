@@ -22,6 +22,8 @@ class BillboardManagerTest {
     @Mock
     private BillboardRepository repository;
 
+    private BillboardRepository repository2;
+
     @InjectMocks
     private BillboardManager manager;
 
@@ -37,41 +39,33 @@ class BillboardManagerTest {
     private BillboardItem film10 = new BillboardItem(10, "film10", "genre1");
     private BillboardItem film11 = new BillboardItem(11, "film11", "genre2");
     private BillboardItem film12 = new BillboardItem(12, "film12", "genre2");
-
-    @BeforeEach
-    public void setUp() {
-        repository.setN(5);
-
-        manager.add(film1);
-        manager.add(film2);
-        manager.add(film3);
-        manager.add(film4);
-        manager.add(film5);
-        manager.add(film6);
-        manager.add(film7);
-        manager.add(film8);
-        manager.add(film9);
-        manager.add(film10);
-        manager.add(film11);
-        manager.add(film12);
-    }
+    private BillboardItem film13 = new BillboardItem(13, "film13", "genre1");
 
     @Test
-    public void shouldRemoveIfExists() {
-        int idToRemove = 10;
-        // настройка заглушки
-        BillboardItem[] returned = new BillboardItem[]{film12, film11, film10, film9, film8, film7, film6, film5, film4, film3, film2, film1};
+    public void shouldRemoveIfExists(){
+        int idToRemove = 3;
+
+        BillboardItem[] returned = new BillboardItem[]{film12, film11, film10, film9, film8, film7, film6, film5, film4, film2};
         doReturn(returned).when(repository).findAll();
         doNothing().when(repository).removeById(idToRemove);
 
         manager.removeById(idToRemove);
-        /*BillboardItem[] expected = new BillboardItem[]{film12, film11, film10, film9, film8, film7, film6, film5, film4, film3, film2, film1};*/
-        BillboardItem[] expected = new BillboardItem[]{film1, film2, film3, film4, film5, film6, film7, film8, film9, film10, film11, film12};
-        BillboardItem[] actual = manager.getAll();
+        BillboardItem[] expected = new BillboardItem[]{film12, film11, film10, film9, film8, film7, film6, film5, film4, film2};
+        BillboardItem[] actual = manager.findAll();
         assertArrayEquals(expected, actual);
-
-        // удостоверяемся, что заглушка была вызвана с нужным значением
-        // но это уже проверка "внутренней" реализации
         verify(repository).removeById(idToRemove);
+    }
+
+    @Test
+    public void shouldSave(){
+        BillboardItem[] returned = new BillboardItem[]{film13, film12, film11, film10, film9, film8, film7, film6, film5, film4};
+        doReturn(returned).when(repository).findAll();
+        doNothing().when(repository).save(film13);
+
+        manager.save(film13);
+        BillboardItem[] expected = new BillboardItem[]{film13, film12, film11, film10, film9, film8, film7, film6, film5, film4};
+        BillboardItem[] actual = manager.findAll();
+        assertArrayEquals(expected, actual);
+        verify(repository).save(film13);
     }
 }
